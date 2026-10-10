@@ -1,37 +1,209 @@
-# Simulador de equilibrio de mercado
+<div align="center">
 
-Proyecto académico de Microeconomía (Universidad Veracruzana). Permite mover las curvas de oferta y demanda, ver el punto de equilibrio (P*, Q*) y explorar excesos de oferta o demanda al fijar un precio.
+<img src="public/logo-uv.png" alt="Universidad Veracruzana" width="130" />
 
-## Funciones
+# 📈 Simulador de equilibrio de mercado
 
-- Plano cartesiano (P vs Q) con curvas de demanda y oferta que se arrastran o se ajustan con sliders (desplazamiento y pendiente).
-- Equilibrio con proyecciones a los ejes y panel con P* y Q*.
-- Precio de mercado ajustable: exceso de demanda (escasez) o de oferta (abundancia), con brecha y explicación.
-- Escenarios del Paso 4 (sube la demanda, baja la oferta, escasez) con transiciones animadas.
-- Demostración guiada, modo de anotaciones y texto grande para exponer.
-- Excedente del consumidor y del productor (opcional).
-- Botón para descargar la gráfica como PNG (con título, logotipo y valores). Se elige el nombre y la carpeta con el cuadro "Guardar como" del navegador (Chrome y Edge); en otros navegadores se pide el nombre en un cuadro propio.
-- Fondo animado en JavaScript (canvas) con el logotipo de la UV.
-- Modo claro y oscuro (recuerda tu elección y respeta la preferencia del sistema). La captura PNG respeta el modo activo (claro u oscuro).
-- Barra anclada con las redes oficiales de la UV (sitio, Facebook y X), editable en `src/config.js`.
+**Mueve la oferta y la demanda con el mouse y mira, en tiempo real, cómo cambian el precio y la cantidad de equilibrio.**
 
-## Tecnologías
+*Proyecto académico de Microeconomía · Universidad Veracruzana*
 
-React 19 · Vite · JavaScript (ES modules) · SVG · Canvas · CSS con variables · Vitest · Oxlint
+![React](https://img.shields.io/badge/React-19-005BAC?style=for-the-badge&logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-build-00A94F?style=for-the-badge&logo=vite&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES%20modules-004680?style=for-the-badge&logo=javascript&logoColor=white)
+![Tests](https://img.shields.io/badge/pruebas-11%20pasan-007F3B?style=for-the-badge&logo=vitest&logoColor=white)
 
-## Uso
+**🔗 Demo en línea:** `https://TU-USUARIO.github.io/simulador-equilibrio/`
 
-```bash
-npm install
-npm run dev      # desarrollo
-npm run build    # versión de producción
-npm run lint
-npm test         # pruebas del modelo (src/modelo.test.js)
+<br />
+
+<img src="docs/capturas/01-base-claro.png" alt="Simulador en modo claro, mercado base" width="860" />
+
+</div>
+
+---
+
+## 🎯 ¿De qué trata?
+
+En un mercado, el **precio** y la **cantidad** que se intercambian no se eligen al azar: salen del encuentro entre dos fuerzas.
+
+- 🔵 **La demanda:** cuanto más caro es un producto, **menos** unidades quieren comprar las personas.
+- 🟢 **La oferta:** cuanto más caro es un producto, **más** unidades quieren vender las empresas.
+
+El punto donde las dos curvas se cruzan es el **equilibrio**: el precio (**P\***) al que lo que la gente quiere comprar es justo lo que las empresas quieren vender (**Q\***).
+
+Este programa convierte esa idea en algo que se puede **tocar**: arrastras las curvas, cambias su inclinación, fijas un precio por encima o por debajo del equilibrio y ves al instante qué pasa: si sobran productos, si faltan, y hacia dónde empuja el mercado al precio.
+
+> 💡 **Para quién es:** estudiantes que están aprendiendo oferta y demanda, y para quien necesita explicarlo con una imagen en lugar de solo fórmulas.
+
+---
+
+## 🖼️ Así se ve
+
+<table>
+  <tr>
+    <td width="50%" align="center"><b>Sube la demanda</b><br /><sub>El equilibrio se mueve arriba y a la derecha</sub><br /><br /><img src="docs/capturas/02-sube-la-demanda.png" alt="Escenario: sube la demanda" /></td>
+    <td width="50%" align="center"><b>Escasez · modo oscuro</b><br /><sub>Con excedentes del consumidor (EC) y del productor (EP)</sub><br /><br /><img src="docs/capturas/03-escasez-oscuro.png" alt="Escenario: escasez en modo oscuro" /></td>
+  </tr>
+</table>
+
+<div align="center">
+  <img src="docs/capturas/04-movil.png" alt="Versión para celular" width="260" /><br />
+  <sub>También funciona en celular: las curvas se arrastran con el dedo.</sub>
+</div>
+
+---
+
+## 📚 Conceptos clave
+
+| Símbolo | Qué significa | Cómo se ve en el simulador |
+|:---:|---|---|
+| **P** | Precio | Eje vertical |
+| **Q** | Cantidad | Eje horizontal |
+| **Qd** | Cantidad que la gente **quiere comprar** a un precio dado | Punto azul sobre la curva de demanda |
+| **Qs** | Cantidad que las empresas **quieren vender** a un precio dado | Punto verde sobre la curva de oferta |
+| **P\*  y  Q\*** | Precio y cantidad de **equilibrio** | Punto negro con líneas punteadas a los ejes |
+| **Exceso de demanda (escasez)** | Con un precio bajo, Qd > Qs: faltan productos y el precio tiende a **subir** | Brecha sombreada + flecha ⬆ |
+| **Exceso de oferta (abundancia)** | Con un precio alto, Qs > Qd: sobran productos y el precio tiende a **bajar** | Brecha sombreada + flecha ⬇ |
+| **EC / EP** | Excedente del consumidor / del productor: el "beneficio" de cada lado | Áreas azul y verde (opcional) |
+
+---
+
+## 🧮 Cómo funciona el modelo
+
+Las dos curvas son rectas y el equilibrio se calcula igualándolas:
+
+```text
+Demanda:  P = 100 − md · (Q − sd)        sd = desplazamiento,  md = pendiente
+Oferta:   P =  10 + ms · (Q − ss)        ss = desplazamiento,  ms = pendiente
+
+Equilibrio:
+  Q* = (100 − 10 + md·sd + ms·ss) / (md + ms)
+  P* = 100 − md · (Q* − sd)
 ```
 
-## Personalización
+Con los valores iniciales (`sd = ss = 0`, `md = ms = 1`) el mercado base queda en **P\* = 55** y **Q\* = 45**. Todo el cálculo vive en [`src/modelo.js`](src/modelo.js) y está cubierto por pruebas automáticas.
 
-- Enlaces de GitHub y lista de tecnologías: `src/config.js`
-- Paleta (aproximada, no oficial) de la Universidad Veracruzana: variables `--uv-*` en `src/index.css`
-- Logotipo: `public/logo-uv.png` (usar sin deformar ni cambiar sus colores)
-- Intensidad del fondo animado: `src/components/FondoCanvas.jsx`
+---
+
+## ✨ Qué puedes hacer
+
+<table>
+  <tr>
+    <td valign="top" width="50%">
+
+### 🖱️ Interactuar
+- **Arrastrar** las curvas de oferta y demanda con el mouse o el dedo
+- **Sliders** de desplazamiento y pendiente para cada curva
+- **Fijar un precio** de mercado y ver el exceso de oferta o de demanda
+- Botón **"Igualar al equilibrio"** y **"Restablecer todo"**
+
+### 🎬 Entenderlo
+- **Escenarios con un clic**, con transiciones animadas
+- **Demostración guiada** paso a paso con explicaciones
+- Tabla **"Qué cambió"** respecto al mercado base, con flecha de cómo se movió el equilibrio
+- **Excedentes** del consumidor y del productor (opcional)
+
+    </td>
+    <td valign="top" width="50%">
+
+### 📸 Presentarlo
+- **Descargar captura (PNG)** eligiendo nombre y carpeta, con título, logotipo y valores
+- Modo de **anotaciones** que señala cada elemento de la gráfica
+- **Texto grande** para exponer en proyector
+- La captura respeta el **modo claro u oscuro** activo
+
+
+    </td>
+  </tr>
+</table>
+
+---
+
+## 🧪 Escenarios incluidos
+
+Se cargan con un clic desde los botones de arriba de la gráfica:
+
+| Escenario | Qué cambia | Resultado |
+|---|---|---|
+| **Base** | Valores iniciales | P\* = 55 · Q\* = 45 |
+| **1. Sube la demanda** | La demanda se desplaza 15 a la derecha | P\* = 62.5 ▲ · Q\* = 52.5 ▲ |
+| **2. Baja la oferta** | La oferta se desplaza 15 a la izquierda | P\* = 62.5 ▲ · Q\* = 37.5 ▼ |
+| **3. Escasez** | El precio se fija en 35 (por debajo de P\*) | Qd = 65 · Qs = 25 · **brecha = 40** |
+
+---
+
+## 🚀 Cómo ejecutarlo
+
+Necesitas [Node.js](https://nodejs.org/) **20.19 o superior** (o 22.12 en adelante).
+
+```bash
+npm install      # instala las dependencias
+npm run dev      # abre el simulador en modo desarrollo
+```
+
+| Comando | Para qué sirve |
+|---|---|
+| `npm run dev` | Servidor de desarrollo con recarga automática |
+| `npm run build` | Genera la versión de producción en `dist/` |
+| `npm run lint` | Revisa el código con Oxlint |
+| `npm test` | Corre las pruebas del modelo (Vitest) |
+
+---
+
+## 🛠️ Tecnologías
+
+| Tecnología | Para qué se usa |
+|---|---|
+| **React * | Interfaz y estado de las curvas |
+| **Vite** | Servidor de desarrollo y compilación |
+| **JavaScript (ES modules)** | Lógica del modelo económico |
+| **SVG** | Gráfica de oferta y demanda, escalable y nítida |
+| **Canvas** | Fondo animado con partículas y logotipos |
+| **CSS** | Paleta, modo claro y oscuro |
+| **Vitest** | Pruebas automáticas del modelo |
+| **Oxlint** | Revisión de código |
+
+---
+
+## 🗂️ Estructura del proyecto
+
+```text
+simulador-equilibrio/
+├── public/                  Logotipos y favicon
+├── docs/capturas/           Imágenes de este README
+├── src/
+│   ├── modelo.js            Cálculo del equilibrio, cantidades y excedentes
+│   ├── modelo.test.js       Pruebas del modelo
+│   ├── App.jsx              Pantalla principal y animaciones entre escenarios
+│   ├── config.js            Enlaces de GitHub, redes de la UV y tecnologías
+│   ├── exportar.js          Captura PNG
+│   ├── useTema.js           Modo claro / oscuro
+│   ├── index.css            Paleta y variables de color
+│   ├── App.css              Estilos de la interfaz
+│   └── components/          Gráfica (Plano, Curvas, Equilibrio, Excedentes…),
+│                            controles, fondo animado, barra de redes, etc.
+└── .github/workflows/       Publicación automática en GitHub Pages
+```
+
+---
+
+## 🌐 Publicación en GitHub Pages
+
+El repositorio incluye un flujo de GitHub Actions que revisa el código, corre las pruebas y publica el sitio cada vez que se sube un cambio a la rama `main`.
+
+---
+
+## 🏛️ Créditos y aviso
+
+- Proyecto académico de la **Universidad Veracruzana**. El nombre y el logotipo son de la institución y se usan sin deformarlos ni cambiar sus colores.
+- Los colores de la paleta son **aproximaciones visuales** tomadas del logotipo, no códigos oficiales certificados.
+- Íconos de redes sociales de [Simple Icons](https://simpleicons.org/) (licencia CC0).
+
+<div align="center">
+
+<br />
+
+[⬆ Volver arriba](#-simulador-de-equilibrio-de-mercado)
+
+</div>
