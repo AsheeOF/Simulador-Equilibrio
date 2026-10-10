@@ -1,0 +1,93 @@
+:root {
+  /* Paleta basada en la Universidad Veracruzana */
+  --uv-blue: #005BAC;
+  --uv-green: #00A94F;
+  --uv-white: #FFFFFF;
+  --uv-charcoal: #231F20;
+
+  --uv-blue-dark: #004680;
+  --uv-green-dark: #007F3B;
+  --uv-blue-light: #EAF2FA;
+  --uv-green-light: #E8F6ED;
+  --uv-gray-light: #F3F4F6;
+  --uv-gray: #6B7280;
+  --uv-grid: #DDE2E8; 
+}
+
+:root {
+  color-scheme: light;
+  --t-fondo: #F3F4F6;
+  --t-superficie: #FFFFFF;
+  --t-panel: rgba(255, 255, 255, .92);
+  --t-azul-claro: #EAF2FA;
+  --t-verde-claro: #E8F6ED;
+  --t-texto: #231F20;
+  --t-texto-sec: #4B5563;
+  --t-gris: #6B7280;
+  --t-rejilla: #DDE2E8;
+  --t-azul: #005BAC;
+  --t-azul-osc: #004680;
+  --t-verde: #00A94F;
+  --t-verde-osc: #007F3B;
+  --t-btn-azul: #005BAC;
+  --t-btn-verde: #007F3B;
+  --t-btn-hover: #231F20;
+  --t-sobre: #FFFFFF;
+  --t-gh-bg: #231F20;
+  --t-gh-fg: #FFFFFF;
+  --t-sombra: rgba(35, 31, 32, .07);
+  --t-sombra-azul: rgba(0, 70, 128, .12);
+  --t-sombra-fuerte: rgba(0, 70, 128, .24);
+  --t-punto: rgba(0, 91, 172, .10);
+  --t-borde: rgba(0, 91, 172, .12);
+}
+:root[data-tema='dark'] {
+  color-scheme: dark;
+  --t-fondo: #0B1422;
+  --t-superficie: #15233A;
+  --t-panel: rgba(21, 35, 58, .90);
+  --t-azul-claro: #1C3556;
+  --t-verde-claro: #14352A;
+  --t-texto: #E8EEF6;
+  --t-texto-sec: #AAB7C8;
+  --t-gris: #93A3B8;
+  --t-rejilla: #2A3B55;
+  --t-azul: #5BA8F0;
+  --t-azul-osc: #A5D0F8;
+  --t-verde: #34D07A;
+  --t-verde-osc: #4FDC8B;
+  --t-btn-azul: #2271C4;
+  --t-btn-verde: #0E7A3E;
+  --t-btn-hover: #0A5A2D;
+  --t-gh-bg: #E8EEF6;
+  --t-gh-fg: #0B1422;
+  --t-sombra: rgba(0, 0, 0, .35);
+  --t-sombra-azul: rgba(0, 0, 0, .45);
+  --t-sombra-fuerte: rgba(0, 0, 0, .6);
+  --t-punto: rgba(91, 168, 240, .12);
+  --t-borde: rgba(91, 168, 240, .22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--t-fondo);
+  color: var(--t-texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  line-height: 1.45;
+}
+
+h1, h2 { margin: 0 0 8px; }
+h2 { font-size: 18px; }
+
+:focus-visible {
+  outline: 3px solid var(--t-azul);
+  outline-offset: 2px;
+}
+
+input[type='range'] { accent-color: var(--t-azul); }
+input[type='checkbox'] { accent-color: var(--t-azul); }
+
+
+:root { --uv-gray-dark: #4B5563; }
