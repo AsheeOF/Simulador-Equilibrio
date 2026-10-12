@@ -1,8 +1,9 @@
+import { memo } from 'react';
 import IconoGitHub from './IconoGitHub';
 import { IconoLuna, IconoSol } from '../iconos';
 import { GITHUB_PERFIL } from '../config';
 
-export default function Cabecera({ tema, onAlternarTema }) {
+function Cabecera({ tema, onAlternarTema }) {
   const oscuro = tema === 'dark';
   return (
     <header className="cabecera">
@@ -26,3 +27,6 @@ export default function Cabecera({ tema, onAlternarTema }) {
     </header>
   );
 }
+
+// No cambia mientras la animación redibuja la pantalla en cada cuadro
+export default memo(Cabecera);

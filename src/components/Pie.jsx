@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import IconoGitHub from './IconoGitHub';
 import { GITHUB_REPO, TECNOLOGIAS } from '../config';
 
-export default function Pie() {
+function Pie() {
   return (
     <footer className="pie">
       <h2>Tecnologías utilizadas</h2>
@@ -17,3 +18,6 @@ export default function Pie() {
     </footer>
   );
 }
+
+// No cambia mientras la animación redibuja la pantalla en cada cuadro
+export default memo(Pie);

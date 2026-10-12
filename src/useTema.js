@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const CLAVE = 'tema-simulador';
 
@@ -19,5 +19,7 @@ export default function useTema() {
     try { localStorage.setItem(CLAVE, tema); } catch { /* ignorar */ }
   }, [tema]);
 
-  return [tema, () => setTema((t) => (t === 'dark' ? 'light' : 'dark'))];
+  const alternar = useCallback(() => setTema((t) => (t === 'dark' ? 'light' : 'dark')), []);
+
+  return [tema, alternar];
 }

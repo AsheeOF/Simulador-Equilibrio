@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { REDES_UV } from '../config';
 import { IconoFacebook, IconoInstagram, IconoWeb, IconoX, IconoYouTube } from '../iconos';
 
@@ -7,7 +8,7 @@ const ICONOS = {
 };
 
 // Barra anclada (siempre visible) con las redes oficiales de la UV
-export default function RedesUV() {
+function RedesUV() {
   return (
     <nav className="redes" aria-label="Redes oficiales de la Universidad Veracruzana">
       <span className="redes__titulo">UV</span>
@@ -24,3 +25,6 @@ export default function RedesUV() {
     </nav>
   );
 }
+
+// No cambia mientras la animación redibuja la pantalla en cada cuadro
+export default memo(RedesUV);

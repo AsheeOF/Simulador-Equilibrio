@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 
 // Partículas y líneas: la paleta de la UV en modo claro, tonos más claros en modo oscuro
@@ -9,7 +9,7 @@ const PALETA = {
 
 const azar = (a, b) => a + Math.random() * (b - a);
 
-export default function FondoCanvas({ tema = 'light' }) {
+function FondoCanvas({ tema = 'light' }) {
   const ref = useRef(null);
   const temaRef = useRef(tema);
   const redibujar = useRef(null);
@@ -44,7 +44,7 @@ export default function FondoCanvas({ tema = 'light' }) {
     };
 
     const ajustar = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = 1; // es un fondo decorativo y difuso: dibujarlo a 1x ahorra hasta 4 veces el trabajo en pantallas retina
       w = window.innerWidth; h = window.innerHeight;
       canvas.width = w * dpr; canvas.height = h * dpr;
       canvas.style.width = `${w}px`; canvas.style.height = `${h}px`;
@@ -87,7 +87,7 @@ export default function FondoCanvas({ tema = 'light' }) {
           }
           p.vx *= 0.985; p.vy *= 0.985; // fricción
           // velocidad mínima para que nunca se queden quietas
-          if (Math.hypot(p.vx, p.vy) < 0.08) { p.vx += azar(-0.02, 0.02); p.vy += azar(-0.02, 0.02); }
+          if (p.vx * p.vx + p.vy * p.vy < 0.0064) { p.vx += azar(-0.02, 0.02); p.vy += azar(-0.02, 0.02); }
           p.x += p.vx; p.y += p.vy;
           if (p.x < 0) p.x = w; else if (p.x > w) p.x = 0;
           if (p.y < 0) p.y = h; else if (p.y > h) p.y = 0;
@@ -100,15 +100,19 @@ export default function FondoCanvas({ tema = 'light' }) {
         const a = parts[i];
         for (let j = i + 1; j < parts.length; j++) {
           const b = parts[j];
-          const d = Math.hypot(a.x - b.x, a.y - b.y);
-          if (d < 120) {
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 14400) { // 120 px al cuadrado: la raíz solo se calcula si hay línea que dibujar
+            const d = Math.sqrt(d2);
             ctx.strokeStyle = `rgba(${pal.azul}, ${(1 - d / 120) * 0.22})`;
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
           }
         }
         // enlace con el cursor
-        const dm = Math.hypot(a.x - mouse.x, a.y - mouse.y);
-        if (dm < 170) {
+        const mx = a.x - mouse.x, my = a.y - mouse.y;
+        const m2 = mx * mx + my * my;
+        if (m2 < 28900) { // 170 px al cuadrado
+          const dm = Math.sqrt(m2);
           ctx.strokeStyle = `rgba(${pal.verde}, ${(1 - dm / 170) * 0.5})`;
           ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
         }
@@ -177,3 +181,6 @@ export default function FondoCanvas({ tema = 'light' }) {
 
   return <canvas ref={ref} className="fondo-canvas" aria-hidden="true" />;
 }
+
+// No cambia mientras la animación redibuja la pantalla en cada cuadro
+export default memo(FondoCanvas);

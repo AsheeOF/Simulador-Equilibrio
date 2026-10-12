@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import Plano from './components/Plano';
 import Curvas from './components/Curvas';
@@ -13,6 +13,7 @@ import Pie from './components/Pie';
 import FondoCanvas from './components/FondoCanvas';
 import RedesUV from './components/RedesUV';
 import useTema from './useTema';
+import useAnimacion from './useAnimacion';
 import Excedentes from './components/Excedentes';
 import DialogoNombre from './components/DialogoNombre';
 import { descargarConNombre, guardarConSelector, nombreSugerido } from './exportar';
@@ -31,9 +32,6 @@ const LEYENDA = [
 
 const DURACION_ANIM = 700;   
 const DURACION_PASO = 4200;  
-const sinMovimiento = () =>
-  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export default function App() {
   const [sd, setSd] = useState(0);
   const [md, setMd] = useState(1);
@@ -46,7 +44,6 @@ export default function App() {
   const [excedente, setExcedente] = useState(false);
   const [pista, setPista] = useState(true); 
   const [dialogoCaptura, setDialogoCaptura] = useState(null); 
-  const raf = useRef(null);
   const [tema, alternarTema] = useTema();
 
   const params = { sd, md, ss, ms };
@@ -63,57 +60,35 @@ export default function App() {
     e.params.ss === ss && e.params.ms === ms && e.precio === pm
   )?.id ?? null;
 
-  // Detiene cualquier animación en curso (se llama cuando la persona toca un control)
-  const detener = () => {
-    cancelAnimationFrame(raf.current);
-    raf.current = null;
+  // Las transiciones entre escenarios las mueve el hook useAnimacion
+  const aplicar = (v, esFinal) => {
+    setSd(v.sd); setMd(v.md); setSs(v.ss); setMs(v.ms);
+    setPm(esFinal ? v.pmFinal : v.p);
   };
-  const manual = (setter) => (v) => { detener(); setDemo(null); setPista(false); setter(v); };
+  const { animar, detener } = useAnimacion(aplicar, DURACION_ANIM);
 
-  // Mueve suavemente las curvas y el precio hasta un destino.
-  const animar = (destino) => {
-    detener();
+  // Los valores actuales, para que `irA` arranque desde donde está todo ahora mismo
+  const actualRef = useRef(null);
+  useEffect(() => { actualRef.current = { sd, md, ss, ms, p: precio }; });
+
+  // destino = { params: {sd, md, ss, ms}, precio: número o null (null = equilibrio) }
+  const irA = useCallback((destino) => {
     const d = destino.params;
-    const pFinal = destino.precio ?? equilibrio(d).p;
-    if (sinMovimiento()) {
-      setSd(d.sd); setMd(d.md); setSs(d.ss); setMs(d.ms); setPm(destino.precio);
-      return;
-    }
-    const ini = { sd, md, ss, ms, p: precio };
-    const t0 = performance.now();
-    const paso = (t) => {
-      const k = Math.min(1, (t - t0) / DURACION_ANIM);
-      if (k >= 1) {
-        // valores exactos al terminar, para que el escenario quede identificado
-        setSd(d.sd); setMd(d.md); setSs(d.ss); setMs(d.ms); setPm(destino.precio);
-        raf.current = null;
-        return;
-      }
-      const e = 1 - Math.pow(1 - k, 3); // frena al llegar
-      setSd(ini.sd + (d.sd - ini.sd) * e);
-      setMd(ini.md + (d.md - ini.md) * e);
-      setSs(ini.ss + (d.ss - ini.ss) * e);
-      setMs(ini.ms + (d.ms - ini.ms) * e);
-      setPm(ini.p + (pFinal - ini.p) * e);
-      raf.current = requestAnimationFrame(paso);
-    };
-    raf.current = requestAnimationFrame(paso);
-  };
+    animar(actualRef.current, { ...d, p: destino.precio ?? equilibrio(d).p, pmFinal: destino.precio });
+  }, [animar]);
 
-  const elegir = (e) => { setDemo(null); animar(e); };
-  const igualar = () => { setDemo(null); animar({ params, precio: null }); };
-  const restablecer = () => { setDemo(null); animar(ESCENARIOS[0]); };
+  const manual = (setter) => (v) => { detener(); setDemo(null); setPista(false); setter(v); };
+  const elegir = (e) => { setDemo(null); irA(e); };
+  const igualar = () => { setDemo(null); irA({ params, precio: null }); };
+  const restablecer = () => { setDemo(null); irA(ESCENARIOS[0]); };
 
   // Demostración guiada: recorre los escenarios con una explicación en cada uno
   useEffect(() => {
     if (demo === null) return undefined;
-    animar(ESCENARIOS[demo]);
+    irA(ESCENARIOS[demo]);
     const t = setTimeout(() => setDemo(demo + 1 < ESCENARIOS.length ? demo + 1 : null), DURACION_PASO);
     return () => clearTimeout(t);
-
-  }, [demo]);
-
-  useEffect(() => detener, []);
+  }, [demo, irA]);
 
   const insignia = {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',

@@ -13,7 +13,7 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES%20modules-004680?style=for-the-badge&logo=javascript&logoColor=white)
 ![Tests](https://img.shields.io/badge/pruebas-11%20pasan-007F3B?style=for-the-badge&logo=vitest&logoColor=white)
 
-**🔗 Demo en línea:** `https://TU-USUARIO.github.io/simulador-equilibrio/`
+**🔗 Demo en línea:** `https://asheeof.github.io/Simulador-Equilibrio/`
 
 <br />
 
@@ -113,6 +113,11 @@ Con los valores iniciales (`sd = ss = 0`, `md = ms = 1`) el mercado base queda e
 - **Texto grande** para exponer en proyector
 - La captura respeta el **modo claro u oscuro** activo
 
+### 🎨 Disfrutarlo
+- **Modo claro y oscuro** (recuerda tu elección)
+- Fondo animado en **JavaScript (canvas)**: partículas que reaccionan al mouse y logos de la UV con parallax
+- Barra anclada con las **redes oficiales** de la Universidad Veracruzana
+- Respeta la preferencia de **movimiento reducido** del sistema
 
     </td>
   </tr>
@@ -155,12 +160,12 @@ npm run dev      # abre el simulador en modo desarrollo
 
 | Tecnología | Para qué se usa |
 |---|---|
-| **React * | Interfaz y estado de las curvas |
+| **React 19** | Interfaz y estado de las curvas |
 | **Vite** | Servidor de desarrollo y compilación |
 | **JavaScript (ES modules)** | Lógica del modelo económico |
 | **SVG** | Gráfica de oferta y demanda, escalable y nítida |
-| **Canvas** | Fondo animado con partículas y logotipos |
-| **CSS** | Paleta, modo claro y oscuro |
+| **Canvas** | Fondo animado con partículas y logotipos (ligero: se dibuja a 1x y se pausa si la pestaña no está visible) |
+| **CSS con variables** | Paleta, modo claro y oscuro |
 | **Vitest** | Pruebas automáticas del modelo |
 | **Oxlint** | Revisión de código |
 
@@ -173,12 +178,13 @@ simulador-equilibrio/
 ├── public/                  Logotipos y favicon
 ├── docs/capturas/           Imágenes de este README
 ├── src/
-│   ├── modelo.js            Cálculo del equilibrio, cantidades y excedentes
+│   ├── modelo.js            ⭐ Cálculo del equilibrio, cantidades y excedentes
 │   ├── modelo.test.js       Pruebas del modelo
 │   ├── App.jsx              Pantalla principal y animaciones entre escenarios
 │   ├── config.js            Enlaces de GitHub, redes de la UV y tecnologías
 │   ├── exportar.js          Captura PNG
 │   ├── useTema.js           Modo claro / oscuro
+│   ├── useAnimacion.js      Transiciones suaves entre escenarios
 │   ├── index.css            Paleta y variables de color
 │   ├── App.css              Estilos de la interfaz
 │   └── components/          Gráfica (Plano, Curvas, Equilibrio, Excedentes…),
@@ -188,9 +194,34 @@ simulador-equilibrio/
 
 ---
 
+## ⚡ Rendimiento
+
+- **Fondo animado ligero:** el canvas se dibuja a resolución 1x, se pausa cuando la pestaña no está visible y evita los desenfoques costosos.
+- **Imágenes optimizadas:** logotipos redimensionados y comprimidos; el sitio completo pesa unos 350 KB sin comprimir.
+- **Movimiento reducido:** si el sistema lo pide, las animaciones se desactivan y los cambios son instantáneos.
+
+---
+
+## 🎨 Personalización
+
+| Quiero cambiar… | Dónde |
+|---|---|
+| Mis enlaces de GitHub y la lista de tecnologías | `src/config.js` |
+| Las redes de la UV de la barra lateral | `REDES_UV` en `src/config.js` |
+| Los colores (claro y oscuro) | Variables `--t-*` y `--uv-*` en `src/index.css` |
+| La intensidad del fondo animado | `src/components/FondoCanvas.jsx` |
+| El nombre que se propone al descargar la captura | `nombreSugerido` en `src/exportar.js` |
+| Los valores base de las curvas | `PD0`, `PS0` y `BASE` en `src/modelo.js` |
+
+---
+
 ## 🌐 Publicación en GitHub Pages
 
 El repositorio incluye un flujo de GitHub Actions que revisa el código, corre las pruebas y publica el sitio cada vez que se sube un cambio a la rama `main`.
+
+1. En GitHub, entra a **Settings → Pages**.
+2. En **Source**, elige **GitHub Actions**.
+3. Sube tus cambios a `main` y espera a que termine el flujo en la pestaña **Actions**.
 
 ---
 
@@ -203,6 +234,8 @@ El repositorio incluye un flujo de GitHub Actions que revisa el código, corre l
 <div align="center">
 
 <br />
+
+**Hecho para entender cómo se forma un precio. 🌱**
 
 [⬆ Volver arriba](#-simulador-de-equilibrio-de-mercado)
 

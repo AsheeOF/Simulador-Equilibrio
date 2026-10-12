@@ -51,7 +51,6 @@
 .tarjeta small { color: var(--t-gris); }
 .tarjeta__valor { font-size: 22px; font-weight: 700; white-space: nowrap; }
 .tarjeta-info { background: var(--t-superficie); border-radius: 10px; padding: 12px; margin-bottom: 16px; }
-.tarjeta-info__cambios { display: flex; gap: 18px; margin: 8px 0; font-weight: 600; flex-wrap: wrap; }
 
 .titulo-demanda { color: var(--t-azul); }
 .titulo-oferta { color: var(--t-verde-osc); }
@@ -192,7 +191,7 @@ body {
 
 /* Paneles de controles agrupados */
 .panel {
-  background: var(--t-panel); backdrop-filter: blur(6px);
+  background: var(--t-panel);
   border-radius: 14px; padding: 12px 14px 6px; margin-bottom: 14px;
   border-left: 6px solid var(--t-gris);
   transition: box-shadow .2s;
@@ -309,7 +308,7 @@ body { transition: background-color .3s, color .3s; }
   position: fixed; z-index: 20; left: 14px; top: 50%; transform: translateY(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 10px;
   padding: 12px 8px; border-radius: 999px;
-  background: var(--t-panel); backdrop-filter: blur(8px);
+  background: var(--t-panel);
   border: 1px solid var(--t-borde); box-shadow: 0 8px 24px var(--t-sombra-azul);
 }
 .redes__titulo { font-size: 11px; font-weight: 800; letter-spacing: .08em; color: var(--t-azul); }
