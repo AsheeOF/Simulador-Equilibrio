@@ -160,7 +160,7 @@ npm run dev      # abre el simulador en modo desarrollo
 
 | Tecnología | Para qué se usa |
 |---|---|
-| **React ** | Interfaz y estado de las curvas |
+| **React** | Interfaz y estado de las curvas |
 | **Vite** | Servidor de desarrollo y compilación |
 | **JavaScript (ES modules)** | Lógica del modelo económico |
 | **SVG** | Gráfica de oferta y demanda, escalable y nítida |
