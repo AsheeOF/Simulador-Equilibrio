@@ -2,7 +2,7 @@
 
 <img src="public/logo-uv.png" alt="Universidad Veracruzana" width="130" />
 
-# 📈 Simulador de equilibrio de mercado
+# Simulador de equilibrio de mercado
 
 **Mueve la oferta y la demanda con el mouse y mira, en tiempo real, cómo cambian el precio y la cantidad de equilibrio.**
 
@@ -23,7 +23,7 @@
 
 ---
 
-## 🎯 ¿De qué trata?
+##  ¿De qué trata?
 
 En un mercado, el **precio** y la **cantidad** que se intercambian no se eligen al azar: salen del encuentro entre dos fuerzas.
 
@@ -34,11 +34,11 @@ El punto donde las dos curvas se cruzan es el **equilibrio**: el precio (**P\***
 
 Este programa convierte esa idea en algo que se puede **tocar**: arrastras las curvas, cambias su inclinación, fijas un precio por encima o por debajo del equilibrio y ves al instante qué pasa: si sobran productos, si faltan, y hacia dónde empuja el mercado al precio.
 
-> 💡 **Para quién es:** estudiantes que están aprendiendo oferta y demanda, y para quien necesita explicarlo con una imagen en lugar de solo fórmulas.
+>  **Para quién es:** estudiantes que están aprendiendo oferta y demanda, y para quien necesita explicarlo con una imagen en lugar de solo fórmulas.
 
 ---
 
-## 🖼️ Así se ve
+##  Así se ve
 
 <table>
   <tr>
@@ -69,7 +69,7 @@ Este programa convierte esa idea en algo que se puede **tocar**: arrastras las c
 
 ---
 
-## 🧮 Cómo funciona el modelo
+## Cómo funciona el modelo
 
 Las dos curvas son rectas y el equilibrio se calcula igualándolas:
 
@@ -86,19 +86,19 @@ Con los valores iniciales (`sd = ss = 0`, `md = ms = 1`) el mercado base queda e
 
 ---
 
-## ✨ Qué puedes hacer
+##  Qué puedes hacer
 
 <table>
   <tr>
     <td valign="top" width="50%">
 
-### 🖱️ Interactuar
+###  Interactuar
 - **Arrastrar** las curvas de oferta y demanda con el mouse o el dedo
 - **Sliders** de desplazamiento y pendiente para cada curva
 - **Fijar un precio** de mercado y ver el exceso de oferta o de demanda
 - Botón **"Igualar al equilibrio"** y **"Restablecer todo"**
 
-### 🎬 Entenderlo
+###  Entenderlo
 - **Escenarios con un clic**, con transiciones animadas
 - **Demostración guiada** paso a paso con explicaciones
 - Tabla **"Qué cambió"** respecto al mercado base, con flecha de cómo se movió el equilibrio
@@ -107,13 +107,13 @@ Con los valores iniciales (`sd = ss = 0`, `md = ms = 1`) el mercado base queda e
     </td>
     <td valign="top" width="50%">
 
-### 📸 Presentarlo
+### Presentarlo
 - **Descargar captura (PNG)** eligiendo nombre y carpeta, con título, logotipo y valores
 - Modo de **anotaciones** que señala cada elemento de la gráfica
 - **Texto grande** para exponer en proyector
 - La captura respeta el **modo claro u oscuro** activo
 
-### 🎨 Disfrutarlo
+### Disfrutarlo
 - **Modo claro y oscuro** (recuerda tu elección)
 - Fondo animado en **JavaScript (canvas)**: partículas que reaccionan al mouse y logos de la UV con parallax
 - Barra anclada con las **redes oficiales** de la Universidad Veracruzana
@@ -125,7 +125,7 @@ Con los valores iniciales (`sd = ss = 0`, `md = ms = 1`) el mercado base queda e
 
 ---
 
-## 🧪 Escenarios incluidos
+##  Escenarios incluidos
 
 Se cargan con un clic desde los botones de arriba de la gráfica:
 
@@ -138,7 +138,7 @@ Se cargan con un clic desde los botones de arriba de la gráfica:
 
 ---
 
-## 🚀 Cómo ejecutarlo
+## Cómo ejecutarlo
 
 Necesitas [Node.js](https://nodejs.org/) **20.19 o superior** (o 22.12 en adelante).
 
@@ -156,15 +156,14 @@ npm run dev      # abre el simulador en modo desarrollo
 
 ---
 
-## 🛠️ Tecnologías
+##  Tecnologías
 
 | Tecnología | Para qué se usa |
 |---|---|
-| **React 19** | Interfaz y estado de las curvas |
+| **React ** | Interfaz y estado de las curvas |
 | **Vite** | Servidor de desarrollo y compilación |
 | **JavaScript (ES modules)** | Lógica del modelo económico |
 | **SVG** | Gráfica de oferta y demanda, escalable y nítida |
-| **Canvas** | Fondo animado con partículas y logotipos (ligero: se dibuja a 1x y se pausa si la pestaña no está visible) |
 | **CSS con variables** | Paleta, modo claro y oscuro |
 | **Vitest** | Pruebas automáticas del modelo |
 | **Oxlint** | Revisión de código |
@@ -178,7 +177,7 @@ simulador-equilibrio/
 ├── public/                  Logotipos y favicon
 ├── docs/capturas/           Imágenes de este README
 ├── src/
-│   ├── modelo.js            ⭐ Cálculo del equilibrio, cantidades y excedentes
+│   ├── modelo.js            Cálculo del equilibrio, cantidades y excedentes
 │   ├── modelo.test.js       Pruebas del modelo
 │   ├── App.jsx              Pantalla principal y animaciones entre escenarios
 │   ├── config.js            Enlaces de GitHub, redes de la UV y tecnologías
@@ -194,7 +193,7 @@ simulador-equilibrio/
 
 ---
 
-## ⚡ Rendimiento
+##  Rendimiento
 
 - **Fondo animado ligero:** el canvas se dibuja a resolución 1x, se pausa cuando la pestaña no está visible y evita los desenfoques costosos.
 - **Imágenes optimizadas:** logotipos redimensionados y comprimidos; el sitio completo pesa unos 350 KB sin comprimir.
@@ -223,19 +222,6 @@ El repositorio incluye un flujo de GitHub Actions que revisa el código, corre l
 2. En **Source**, elige **GitHub Actions**.
 3. Sube tus cambios a `main` y espera a que termine el flujo en la pestaña **Actions**.
 
----
-
-## 🏛️ Créditos y aviso
-
-- Proyecto académico de la **Universidad Veracruzana**. El nombre y el logotipo son de la institución y se usan sin deformarlos ni cambiar sus colores.
-- Los colores de la paleta son **aproximaciones visuales** tomadas del logotipo, no códigos oficiales certificados.
-- Íconos de redes sociales de [Simple Icons](https://simpleicons.org/) (licencia CC0).
-
-<div align="center">
-
-<br />
-
-**Hecho para entender cómo se forma un precio. 🌱**
 
 [⬆ Volver arriba](#-simulador-de-equilibrio-de-mercado)
 
